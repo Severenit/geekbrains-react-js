@@ -1,5 +1,7 @@
 import React from "react";
 
+import Toogle from '../toogle/toogle';
+
 import './news.css';
 
 class News extends React.Component {
@@ -44,23 +46,14 @@ class News extends React.Component {
                     <div className={ 'news__descr' }>
                         { item.descr }
                     </div>
-                    <a href="#" onClick={ (e) => this.handleClick(e) }>
-                        { this.state.visible ? 'Скрыть...' : 'Подробнее...' }
-                    </a>
-                    { this.state.visible ? <div className={ 'news__full_descr' }>Полное описание...</div> : null }
+                    <Toogle title={ 'Читать далее...' }>
+                        <p>
+                            Полное описание...
+                        </p>
+                    </Toogle>
                 </div>
             );
         });
-    }
-
-    handleClick(e) {
-        e.preventDefault();
-
-        this.setState({
-            visible: !this.state.visible
-        });
-
-        this.props.onHandleClick(this.state.visible);
     }
 
 }

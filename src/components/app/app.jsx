@@ -1,58 +1,102 @@
+import { bindActionCreators } from 'redux';
 import React from "react";
+import { connect } from 'react-redux';
+
+import * as newsActions from '../../action/newsActions';
 
 import News from '../news/news';
+
+function mapState(state) {
+    const {
+        user,
+        news
+    } = state;
+
+    return {
+        user,
+        news
+    };
+}
+
+function mapAction(dispatch) {
+    return {
+        newsActions: bindActionCreators(newsActions, dispatch)
+    }
+}
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.inputNewsTitle;
+    }
 
-        this.state = {
-            news: [
-                {
-                    title: 'Facebook предлагает пользователям установить на телефон бесплатный VPN. Лучше этого не делать',
-                    descr: 'В мобильном клиенте Facebook появилась кнопка «Protect» («Защитить»), которая ведет пользователей напрямую на страницу приложения Onavo Protect в App Store.'
-                },
-                {
-                    title: 'Сноубордисты — самые необычные звезды Олимпиады',
-                    descr: 'Они просыпают старт, теряют куртки, твитят между заездами — и выполняют супертрюки'
-                },
-                {
-                    title: 'Белый дом определился, что делать с МКС. Станцию отдадут бизнесменам',
-                    descr: 'Международная космическая станция на низкой земной орбите используется с 1998 года. Станцию строили всем миром: кроме США участие в проекте принимали Россия, Канада, Япония, а также Европейское космическое агентство.'
-                }
-            ]
-        }
-
+    componentDidMount() {
+        this.props.newsActions.showNews();
     }
 
     render() {
+        if (this.props.news.isBusy) {
+            return (
+                <div>
+                    Loading....
+                </div>
+            );
+        }
+
         return (
-            <div>
-                Привет я могу отобразить новости!<br/>
-                <input type="text" ref={ (input) => { this.inputNewsTitle = input; } }/>
-                <button onClick={ () => this.handleClick() }>
-                    Добавить новость
-                </button>
-                <News items={ this.state.news } onHandleClick={ this.handleNewsClick } />
+            <div className="container">
+                <h1>ReactJs Разработка от АльфаБанк</h1>
+                <p className="lead">
+                    Привет, меня зовут { this.props.user.name }
+                </p>
+                <p className="lead">
+                    И я могу отобразить новости за { this.props.news.year } год!
+                </p>
+
+                <div className="row">
+                    <div className="col-xs-2">
+                        <input type="text" ref={ (input) => {
+                            this.inputNewsTitle = input;
+                        } }/>
+                    </div>
+                    <div className="col-xs-2">
+                        <button
+                            className={ 'btn btn-primary' }
+                            onClick={ () => this.handleClick() }
+                        >
+                            Добавить новость
+                        </button>
+                    </div>
+                </div>
+
+
+                <News items={ this.props.news.items } onHandleClick={ this.handleNewsClick }/>
             </div>
         );
     }
 
     handleClick() {
-        let { news } = this.state;
+        console.log('####: handleClick: ');
+        let {
+            news: {
+                items
+            },
+            newsActions: {
+                newsAdd
+            }
+        } = this.props;
 
-        news.push({
+        items.push({
             title: this.inputNewsTitle.value,
-            descr: 'Больше'
+            descr: 'Еще больше...'
         });
 
         this.inputNewsTitle.value = '';
         this.inputNewsTitle.focus();
 
 
-        this.setState(news);
+        newsAdd(items);
     }
 
     handleNewsClick(params) {
@@ -60,4 +104,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default connect(mapState, mapAction)(App);

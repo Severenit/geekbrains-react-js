@@ -1,0 +1,2 @@
+/*! Lee Cooper <lee.cooper@lski.uk> - matches-selector-polyfill - 1.0.0 */!function(){"use strict";function e(e){for(var t=this,r=t.parentNode.querySelectorAll(e),c=r.length;--c>=0;)if(r.item(c)===t)return!0;return!1}var t=Element.prototype;t.matches||t.webkitMatchesSelector||t.mozMatchesSelector||t.msMatchesSelector||e;t.matches||(t.matches=e)}();
+//# sourceMappingURL=maps/matches-selector-polyfill.js.map

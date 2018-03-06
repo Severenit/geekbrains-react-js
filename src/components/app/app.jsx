@@ -2,6 +2,11 @@ import { bindActionCreators } from 'redux';
 import React from "react";
 import { connect } from 'react-redux';
 
+import Heading from 'arui-feather/heading';
+import Paragraph from 'arui-feather/paragraph';
+import Input from 'arui-feather/input';
+import Button from 'arui-feather/button';
+
 import * as newsActions from '../../action/newsActions';
 
 import News from '../news/news';
@@ -46,30 +51,37 @@ class App extends React.Component {
 
         return (
             <div className="container">
-                <h1>ReactJs Разработка от АльфаБанк</h1>
-                <p className="lead">
-                    Привет, меня зовут { this.props.user.name }
-                </p>
-                <p className="lead">
+                <Heading>
+                    ReactJs Разработка от АльфаБанк
+                </Heading>
+                <Paragraph>
+                    Привет, меня зовут { this.props.user.name }<br/>
                     И я могу отобразить новости за { this.props.news.year } год!
-                </p>
-
+                </Paragraph>
                 <div className="row">
-                    <div className="col-xs-2">
-                        <input type="text" ref={ (input) => {
-                            this.inputNewsTitle = input;
-                        } }/>
+                    <div className="col-md-4">
+                        <Input
+                            label='Новость'
+                            placeholder='Введите заголовок новости'
+                            view='line'
+                            width='available'
+                            ref={ (input) => {
+                                this.inputNewsTitle = input;
+                            } }
+                        />
                     </div>
-                    <div className="col-xs-2">
-                        <button
-                            className={ 'btn btn-primary' }
+                    <div className="col-md-4">
+                        <Button
+                            view='extra'
+                            type='submit'
+                            width='available'
                             onClick={ () => this.handleClick() }
                         >
                             Добавить новость
-                        </button>
+                        </Button>
                     </div>
                 </div>
-
+                <hr/>
 
                 <News items={ this.props.news.items } onHandleClick={ this.handleNewsClick }/>
             </div>

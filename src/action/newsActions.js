@@ -15,6 +15,6 @@ export function showNews() {
             dispatch({
                 type: 'SHOW_NEWS_RESOLVE'
             });
-        }, 3000);
+        }, 1000);
     }
 }
